@@ -1,0 +1,15 @@
+Package: veganUtils
+Type: Package
+Title: Utility functions and extensions to vegan and ggvegan
+Version: 0.1.0
+Date: 2018-0-23
+Authors@R: c(person("Mikko", "Vihtakari", email = "mikko.vihtakari@gmail.com", role = c("aut", "cre")))
+Description: veganUtils contains extensions and utility functions to vegan
+    with the aim to make vegan graphics in ggplot2. 
+    The package is complementary to ggvegan and attempts 
+    to use ggvegan solutions whenever possible.  
+Imports: vegan, ggvegan, ggplot2, ggrepel, reshape2, gridExtra
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
