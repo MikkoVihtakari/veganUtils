@@ -9,7 +9,7 @@ Description: veganUtils contains extensions and utility functions to vegan
     The package is complementary to ggvegan and attempts 
     to use ggvegan solutions whenever possible.  
 Imports: vegan, ggvegan, ggplot2, ggrepel, reshape2, gridExtra
-License: GPL-2
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0

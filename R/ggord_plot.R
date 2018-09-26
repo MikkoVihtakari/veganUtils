@@ -55,7 +55,7 @@ if(is.null(mod$CCA)) {
   tmp <- names(x)[grep("(CA)|(PC)", names(x))]
   names(x)[names(x) %in% tmp] <- paste0("AX", gsub("[[:alpha:]]", "", tmp))
 } else {
-  CONST <- TRUE
+  CONST <- TRUE # CONST means constrained ordination (CCA or RDA)
   tmp <- names(x)[grep("(CCA)|(RDA)", names(x))]
   if(length(tmp) == 1) {
     tmp <- c(tmp, names(x)[grep("(CA)|(PC)", names(x))])
@@ -78,6 +78,7 @@ st <- subset(x, Score == "sites")
 st <- droplevels(st)
 
 if(CONST) {
+  
   const_cols <- select(strsplit(as.character(mod$call)[2], "~"), 2)
   const_cols <- trimws(unlist(strsplit(const_cols, "\\+")))
 
@@ -85,7 +86,7 @@ if(CONST) {
   bp <- droplevels(bp)
 
   if(any(levels(x$Score) %in% "centroids")) {
-    CENT <- TRUE
+    CENT <- TRUE # means centroids (i.e. factor level constrains)
     cn <- subset(x, Score == "centroids")
     cn <- droplevels(cn)
 
@@ -95,11 +96,11 @@ if(CONST) {
     bp <- bp[!bp$Label %in% grep(paste(cn_cols, collapse = "|"), bp$Label, value = TRUE),]
     bp <- droplevels(bp)
 
-    if(nrow(bp) > 0) BPARR <- TRUE else BPARR <- FALSE
+    if(nrow(bp) > 0) BPARR <- TRUE else BPARR <- FALSE # means biplot constraints (i.e. vector constraints)
 
   } else {
     CENT <- FALSE
-    BPARR <- FALSE
+    if(nrow(bp) > 0) BPARR <- TRUE else BPARR <- FALSE
   }
 }
 
@@ -120,7 +121,7 @@ if(capitalize_cn & CONST) {
 }
 
   if(BPARR) levels(bp$Label) <- Hmisc::capitalize(levels(bp$Label))
-  levels(cn$Label) <- Hmisc::capitalize(levels(cn$Label))
+  #levels(cn$Label) <- Hmisc::capitalize(levels(cn$Label))
 }
 
 axislabs <- axis_expl(mod, axes = axes)

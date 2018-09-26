@@ -10,7 +10,7 @@ While the [**vegan**](https://cran.r-project.org/web/packages/vegan/) package is
 
 The **veganUtils** package produces **good looking and illustrative ordination graphics for [vegan](https://cran.r-project.org/web/packages/vegan/) with less code**. The package also contains other utility functions and extensions to improve the output of *vegan* objects together with tools to graphically examine nonlinear relationships in multivariate data. Further, many plotting functions in *veganUtils* are implemented using [**ggplot2**](http://ggplot2.tidyverse.org/reference/). The package complements the vegan and [**ggvegan**](https://github.com/gavinsimpson/ggvegan) packages using solutions from these packages whenever possible.
 
-The package is under development and has not been uploaded to CRAN, but *veganUtils* can be installed directly from GitHUb
+The package is under development and has not been uploaded to CRAN, but *veganUtils* can be installed directly from GitHub
 
 ```{r eval = FALSE}
 library(devtools)
