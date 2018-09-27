@@ -8,16 +8,19 @@ ggord_plot(mod, env_data = NULL, axes = 1:2, size_preset = "device",
   arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE,
   envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1,
   capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3",
-  sp_cross_col = "red", cn_col = "darkolivegreen",
-  ordi_col = "lightskyblue1", envfits_col = c("#82C893", "#D696C8",
-  "#056A89", "#B5794C", "#FF9252"), base_size = NULL, site_size = NULL,
-  sp_size = NULL, cn_size = NULL, ordi_size = NULL,
-  envfits_size = NULL, main = NULL)
+  sp_cross_col = "red", sp_symbol, sp_symbol_col,
+  cn_col = "darkolivegreen", ordi_col = "lightskyblue1",
+  envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"),
+  base_size = NULL, site_size = NULL, sp_size = NULL,
+  cn_size = NULL, ordi_size = NULL, envfits_size = NULL,
+  main = NULL)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.}
 
 \item{env_data}{optional data frame containing environmental data, which should be fitted using the \code{\link[vegan]{envfit}} and/or \code{\link[vegan]{ordisurf}} functions. The data frame must have the same row order and number than the species data frame used to construct \code{mod}.}
+
+\item{axes}{numeric vector defining two ordination axes for the plot.}
 
 \item{size_preset}{character specifying the size preset for the graphic device. Options: "device" or "pdf". Size of symbols in the plot will be automatically scaled to the device or 122 mm wide pdf (page width for many scientific journals), respectively. You can override the scaling using the \code{*_size} arguments.}
 
@@ -39,6 +42,12 @@ ggord_plot(mod, env_data = NULL, axes = 1:2, size_preset = "device",
 
 \item{sp_col}{character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).}
 
+\item{sp_cross_col}{character specifying the color for omited species label symbols (\code{+}).}
+
+\item{sp_symbol}{Ignored.}
+
+\item{sp_symbol_col}{Ignored.}
+
 \item{cn_col}{character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).}
 
 \item{ordi_col}{character specifying the color for \code{\link[vegan]{ordisurf}}.}
@@ -57,7 +66,7 @@ ggord_plot(mod, env_data = NULL, axes = 1:2, size_preset = "device",
 
 \item{envfits_size}{cex parameter for \code{\link[vegan]{envfit}} objects.}
 
-\item{sp_symbol_col}{character specifying the color for omited species label symbols (\code{+}).}
+\item{main}{character giving the title for the plot. See \code{\link[ggplot2]{ggtitle}}}
 }
 \description{
 Alternative to plot vegan's CCA and RDA objects using ggplot2. Produces illustrative and good looking graphics with less code and need for customization. Plots \code{\link[vegan]{envfit}} and \code{\link[vegan]{ordisurf}} when needed.

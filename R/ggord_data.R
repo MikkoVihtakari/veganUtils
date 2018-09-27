@@ -1,9 +1,12 @@
 #' @title Organize data from CCA and RDA objects for plotting in ggplot2
-#' @description bla
-#' @param mod
-#' @param env_data
-#' @param axes
-#' @param capitalize_cn
+#' @description Internal function to extract data from vegan's \code{\link[vegan]{cca}} and \code{\link[vegan]{rda}} objects for ggplot2 ordination graphics.
+#' @param mod \code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.
+#' @param env_data data frame containing environmental data.
+#' @param axes numeric vector defining two ordination axes for the plot
+#' @param capitalize_cn logical indicating whether centroid names should be capitalized.
+#' @keywords internal
+#' @author Mikko Vihtakari
+#' @seealso \code{\link{ggord_plot}}
 #' @export
 
 # capitalize_cn = FALSE; axes = 1:2; env_data = y

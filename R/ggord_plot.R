@@ -2,6 +2,7 @@
 #' @description Alternative to plot vegan's CCA and RDA objects using ggplot2. Produces illustrative and good looking graphics with less code and need for customization. Plots \code{\link[vegan]{envfit}} and \code{\link[vegan]{ordisurf}} when needed.
 #' @param mod \code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.
 #' @param env_data optional data frame containing environmental data, which should be fitted using the \code{\link[vegan]{envfit}} and/or \code{\link[vegan]{ordisurf}} functions. The data frame must have the same row order and number than the species data frame used to construct \code{mod}.
+#' @param axes numeric vector defining two ordination axes for the plot.
 #' @param size_preset character specifying the size preset for the graphic device. Options: "device" or "pdf". Size of symbols in the plot will be automatically scaled to the device or 122 mm wide pdf (page width for many scientific journals), respectively. You can override the scaling using the \code{*_size} arguments.
 #' @param arrow.mul factor to expand arrows in the graph. Analogous to the \code{\link[vegan]{plot.cca}} argument of similar name.
 #' @param ordisurf_var character specifying the column name in \code{env_data} that should be used to plot \code{\link[vegan]{ordisurf}}. If \code{NULL}, no \code{\link[vegan]{ordisurf}} will be plotted.
@@ -12,8 +13,9 @@
 #' @param capitalize_cn logical indicating whether centroid names should be capitalized.
 #' @param site_col character specifying the color for sites (\code{display = "sites"} in \code{\link[vegan]{plot.cca}}).
 #' @param sp_col character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).
-#' @param sp_symbol_col character specifying the color for omited species label symbols (\code{+}).
-#' @param sp_symbol
+#' @param sp_cross_col character specifying the color for omited species label symbols (\code{+}).
+#' @param sp_symbol Ignored.
+#' @param sp_symbol_col Ignored.
 #' @param cn_col character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).
 #' @param ordi_col character specifying the color for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects.
@@ -23,6 +25,7 @@
 #' @param cn_size font size for centroid labels
 #' @param ordi_size cex parameter for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_size cex parameter for \code{\link[vegan]{envfit}} objects.
+#' @param main character giving the title for the plot. See \code{\link[ggplot2]{ggtitle}}
 #' @details All font sizes should be specified using actual font sizes (not ggplot font sizes).
 #' @import ggvegan vegan ggplot2 ggrepel
 #' @importFrom Hmisc capitalize
@@ -32,7 +35,7 @@
 # mod = mod1c;
 # axes = 1:2; env_data = NULL; axes = 1:2; size_preset = "device"; arrow.mul = NULL; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; sp_repel_method = "orditorp"; sp_label_omit = 0.1; capitalize_cn = TRUE; site_col = "grey70"; sp_col = "firebrick3"; sp_cross_col = "red"; cn_col = "darkolivegreen"; ordi_col = "lightskyblue1"; envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"); base_size = NULL; site_size = NULL; sp_size = NULL; cn_size = NULL; ordi_size = NULL; envfits_size = NULL; main = NULL
 
-ggord_plot <- function(mod, env_data = NULL, axes = 1:2, size_preset = "device", arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE, envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1, capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3", sp_cross_col = "red", cn_col = "darkolivegreen", ordi_col = "lightskyblue1", envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"), base_size = NULL, site_size = NULL, sp_size = NULL, cn_size = NULL, ordi_size = NULL, envfits_size = NULL, main = NULL) {
+ggord_plot <- function(mod, env_data = NULL, axes = 1:2, size_preset = "device", arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE, envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1, capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3", sp_cross_col = "red", sp_symbol, sp_symbol_col, cn_col = "darkolivegreen", ordi_col = "lightskyblue1", envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"), base_size = NULL, site_size = NULL, sp_size = NULL, cn_size = NULL, ordi_size = NULL, envfits_size = NULL, main = NULL) {
 
 ## Switches and definitions ####
 

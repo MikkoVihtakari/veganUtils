@@ -15,7 +15,8 @@ ord_plot(mod, env_data = NULL, scaling = "species",
   "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL,
   st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL,
   cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL,
-  axis_labs = TRUE, legend_pos = "topleft", ...)
+  axis_labs = TRUE, legend_pos = "topleft", title.main = NULL,
+  title.sub = NULL, ...)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.}
@@ -34,9 +35,19 @@ ord_plot(mod, env_data = NULL, scaling = "species",
 
 \item{orditorp}{logical indicating whether \code{\link[vegan]{orditorp}} should be used to avoid cluttered species names.}
 
+\item{orditorp_air}{numeric defining the air argument for \code{\link[vegan]{orditorp}}.}
+
 \item{st_col}{character specifying the color for sites (\code{display = "sites"} in \code{\link[vegan]{plot.cca}}). Alternatively column name in \code{env_data} and site color will be scaled to levels in the variable. Colors will be taken from the \code{envfits_col} argument.}
 
+\item{st_symbol, sp_symbol}{\code{\link[graphics]{pch}} code for site and species symbols, respectively.}
+
+\item{ordihull_st}{logical indicating whether \code{\link{ordihull}} should be drawn around sites if site colors are scaled to \code{env_data} (see \code{st_col}).}
+
 \item{sp_col}{character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).}
+
+\item{sp_font}{An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.}
+
+\item{latin_sp_names}{logical indicating whether species abbreviations should be converted to latin names. This functionality is probably not working. Check.}
 
 \item{cn_col}{character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).}
 
@@ -48,7 +59,7 @@ ord_plot(mod, env_data = NULL, scaling = "species",
 
 \item{st_cex}{cex parameter for site symbols.}
 
-\item{sp_cex}{cex parameter for species names.}
+\item{sp_cex, sp_symbol_cex}{cex parameter for species names and symbols, respectively.}
 
 \item{cn_cex}{cex parameter for centroids.}
 
@@ -56,7 +67,11 @@ ord_plot(mod, env_data = NULL, scaling = "species",
 
 \item{envfits_cex}{cex parameter for \code{\link[vegan]{envfit}} objects.}
 
+\item{main}{character specifying title for the plot. Overlaps with title.main. Fix.}
+
 \item{legend_pos}{character specifying the location of legend (only added if colors are mapped to variables). Set to \code{NULL} to remove the legend.}
+
+\item{title.main}{Overlaps with main. Fix.}
 
 \item{...}{parameters passed to \code{\link[vegan]{plot.cca}}}
 }

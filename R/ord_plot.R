@@ -14,29 +14,40 @@
 #' @param ordi_col character specifying the color for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects.
 #' @param main_cex cex parameter for axes titles (\code{\link[graphics]{par}(cex)}).
+#' @param sp_font An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.
+#' @param st_symbol,sp_symbol \code{\link[graphics]{pch}} code for site and species symbols, respectively.
+#' @param latin_sp_names logical indicating whether species abbreviations should be converted to latin names. This functionality is probably not working. Check.
+#' @param main character specifying title for the plot. Overlaps with title.main. Fix.
+#' @param title.main Overlaps with main. Fix.
+#' @param orditorp_air numeric defining the air argument for \code{\link[vegan]{orditorp}}.
+#' @param ordihull_st logical indicating whether \code{\link{ordihull}} should be drawn around sites if site colors are scaled to \code{env_data} (see \code{st_col}).
 #' @param st_cex cex parameter for site symbols.
-#' @param sp_cex cex parameter for species names.
+#' @param sp_cex,sp_symbol_cex cex parameter for species names and symbols, respectively.
 #' @param cn_cex cex parameter for centroids.
 #' @param ordi_cex cex parameter for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_cex cex parameter for \code{\link[vegan]{envfit}} objects.
 #' @param legend_pos character specifying the location of legend (only added if colors are mapped to variables). Set to \code{NULL} to remove the legend.
+#' @param title.sub character specifying sub-title for the plot.
 #' @param ... parameters passed to \code{\link[vegan]{plot.cca}}
+#' @details While the function produces OK looking plots at the moment (and they seem to be correct too), the function needs to be rewritten to comply with vegan's "dialect". Also some features are redundant. I will do this rewriting at some point in the future when I have time. Also add examples.
 #' @import vegan
+#' @importFrom Hmisc capitalize
 #' @author Mikko Vihtakari
 #' @export
 
 # Test params
 # env_data = zy; scaling = "species"; size_preset = "device"; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; orditorp = TRUE; orditorp_air = 1; st_col = "grey70"; st_symbol = "+"; ordihull_st = FALSE; species = TRUE; sp_col = "black"; sp_symbol = 20; sp_symbol_col = "black"; sp_font = 3; latin_sp_names = FALSE; cn_col = "darkolivegreen"; ordi_col = c("lightskyblue1", "lightsalmon1"); envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"); main_cex = NULL; st_cex = NULL; sp_cex = NULL; sp_symbol_cex = NULL; cn_cex = NULL; ordi_cex = NULL; envfits_cex = NULL; main = NULL; axis_labs = TRUE; legend_pos = "topleft"
 
-ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "device", ordisurf_var = NULL, centroids = TRUE, envfits = NULL, orditorp = TRUE, orditorp_air = 1, st_col = "grey70", st_symbol = "+", ordihull_st = FALSE, species = TRUE, sp_col = "black", sp_symbol = 20, sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE, cn_col = "darkolivegreen", ordi_col = c("lightskyblue1", "lightsalmon1"), envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL, st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL, cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL, axis_labs = TRUE, legend_pos = "topleft", ...) {
+ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "device", ordisurf_var = NULL, centroids = TRUE, envfits = NULL, orditorp = TRUE, orditorp_air = 1, st_col = "grey70", st_symbol = "+", ordihull_st = FALSE, species = TRUE, sp_col = "black", sp_symbol = 20, sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE, cn_col = "darkolivegreen", ordi_col = c("lightskyblue1", "lightsalmon1"), envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL, st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL, cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL, axis_labs = TRUE, legend_pos = "topleft", title.main = NULL, title.sub = NULL, ...) {
 
 size.names <- c("main_cex", "st_cex", "sp_cex", "sp_symbol_cex", "cn_cex", "ordi_cex", "envfits_cex")
 
 sizes <- switch(size_preset,
-  pdf = list(main_cex = 0.6, st_cex = 0.005, sp_cex = 0.5, cn_cex = 0.8, ordi_cex = 0.4, envfits_cex = 0.5),
+  pdf = list(main_cex = 0.7, st_cex = 0.5, sp_cex = 0.7, sp_symbol_cex = 0.2, cn_cex = 0.8, ordi_cex = 0.5, envfits_cex = 0.6),
   device = list(main_cex = 0.9, st_cex = 0.7, sp_cex = 0.8, sp_symbol_cex = 0.3, cn_cex = 0.9, ordi_cex = 0.7, envfits_cex = 1),
   stop(paste("size_preset =", size_preset, "not defined"))
 )
+
 
 # k <- size.names[4]
 sizes <- lapply(size.names, function(k) {
@@ -50,13 +61,13 @@ sizes <- lapply(size.names, function(k) {
 
 names(sizes) <- size.names
 
-par(cex = sizes$main_cex)
+graphics::par(cex = sizes$main_cex)
 
 ## Base plot
 
-plot(mod, xlab = "", ylab = "", type = "n", main = main, scaling = scaling, ...)
+vegan::plot(mod, xlab = "", ylab = "", type = "n", main = main, scaling = scaling, ...)
 
-if(axis_labs) title(xlab = paste0(names(axis_expl(mod)[1]), " (", sprintf("%.1f", axis_expl(mod)[1]), "%)"), ylab = paste0(names(axis_expl(mod)[2]), " (", sprintf("%.1f", axis_expl(mod)[2]), "%)"))
+if(axis_labs) graphics::title(xlab = paste0(names(axis_expl(mod)[1]), " (", sprintf("%.1f", axis_expl(mod)[1]), "%)"), ylab = paste0(names(axis_expl(mod)[2]), " (", sprintf("%.1f", axis_expl(mod)[2]), "%)"))
 
 ## Ordisurf
 
@@ -69,7 +80,7 @@ if(!is.null(ordisurf_var)) {
   }
 
   for(i in 1:length(ordisurf_var)) {
-    ordisurf(mod, env_data[[ordisurf_var[i]]], add = TRUE, col = ordi_col[i], labcex = sizes$ordi_cex, lwd.cl = sizes$ordi_cex+0.2, scaling = scaling)
+    vegan::ordisurf(mod, env_data[[ordisurf_var[i]]], add = TRUE, col = ordi_col[i], labcex = sizes$ordi_cex, lwd.cl = sizes$ordi_cex+0.2, scaling = scaling)
   }
 } else {
   SURFMAP <- FALSE
@@ -81,17 +92,17 @@ if(!is.null(env_data) & st_col %in% names(env_data)) {
   levs <- levels(env_data[[st_col]])
   STMAP <- TRUE
   for(i in seq_along(levs)) {
-    points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])
+    vegan::points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])
   }
 } else {
   STMAP <- FALSE
-  points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = st_col, scaling = scaling)
+  vegan::points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = st_col, scaling = scaling)
 }
 
 ## Ordihull
 
 if(ordihull_st) {
-  ordihull(mod, env_data[[st_col]], col = envfits_col[1:length(levs)], alpha = 0.5, cex = sizes$ordi_cex)
+  vegan::ordihull(mod, env_data[[st_col]], col = envfits_col[1:length(levs)], alpha = 0.5, cex = sizes$ordi_cex)
 }
 
 ## Species
@@ -107,9 +118,9 @@ if(species){
   }
 
   if(orditorp) {
-  orditorp(mod, display = "sp", pcol = sp_symbol_col, pch = sp_symbol, air = orditorp_air, col = sp_col, cex = sizes$sp_cex, pcex = sizes$sp_symbol_cex, font = sp_font, scaling = scaling, labels = sp_nams$label, priority = sp_nams$priority)
+  vegan::orditorp(mod, display = "sp", pcol = sp_symbol_col, pch = sp_symbol, air = orditorp_air, col = sp_col, cex = sizes$sp_cex, pcex = sizes$sp_symbol_cex, font = sp_font, scaling = scaling, labels = sp_nams$label, priority = sp_nams$priority)
 } else {
-  text(mod, display = "sp", col = sp_col, cex = sizes$sp_cex, font = sp_font, scaling = scaling)
+  vegan::text(mod, display = "sp", col = sp_col, cex = sizes$sp_cex, font = sp_font, scaling = scaling)
 }
 }
 
@@ -117,20 +128,20 @@ if(species){
 
 if(!is.null(envfits) & is.vector(envfits)) {
   if(length(envfits) == 1 & all(envfits == st_col) & STMAP) {
-    ef <- envfit(mod, env_data[envfits])
+    ef <- vegan::envfit(mod, env_data[envfits])
 
     labs <- list(vectors = row.names(ef$vectors$arrows), factors = gsub(paste(names(env_data), collapse = "|"), "", rownames(ef$factors$centroids)))
 
-    plot(ef, add = TRUE, col = envfits_col[1:length(levs)], label = labs, cex = sizes$envfits_cex, font = 2)
+    vegan::plot(ef, add = TRUE, col = envfits_col[1:length(levs)], label = labs, cex = sizes$envfits_cex, font = 2)
 
   } else {
 
     for(k in envfits) {
-    ef <- envfit(mod, env_data[k])
+    ef <- vegan::envfit(mod, env_data[k])
 
     labs <- list(vectors = row.names(ef$vectors$arrows), factors = gsub(paste(names(env_data), collapse = "|"), "", rownames(ef$factors$centroids)))
 
-    plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
+    vegan::plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
     }
   }
 }
@@ -143,10 +154,10 @@ if(!is.null(mod$CCA) & centroids) {
     cents <- names(consts[consts %in% c("factor", "character")])
 
     if(is.null(mod$CCA$centroids)) {
-      text(mod, display = "cn", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      vegan::text(mod, display = "cn", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     } else {
       labs <- Hmisc::capitalize(gsub(paste(cents, collapse = "|"), "", rownames(mod$CCA$centroids)))
-      text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      vegan::text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     }
 }
 
@@ -154,11 +165,18 @@ if(!is.null(mod$CCA) & centroids) {
 
 if((SURFMAP | STMAP) & !is.null(legend_pos)) {
   if(STMAP) {
-    legend(x = legend_pos, legend = levs, col = envfits_col[1:length(levs)], pch = st_symbol, bty = "n", title =  Hmisc::capitalize(gsub("\\.", " ", st_col)))
+    graphics::legend(x = legend_pos, legend = levs, col = envfits_col[1:length(levs)], pch = st_symbol, bty = "n", title = Hmisc::capitalize(gsub("\\.", " ", st_col)))
   }
   if(SURFMAP) {
-    legend(x = legend_pos, legend = ordisurf_var, col = ordi_col[1:length(ordisurf_var)], lty = 1, bty = "n", title =  "Ordisurf variables", yjust = 0)
+    graphics::legend(x = legend_pos, legend = ordisurf_var, col = ordi_col[1:length(ordisurf_var)], lty = 1, bty = "n", title = "Ordisurf variables", yjust = 0)
   }
+}
+
+## Title
+
+if(!is.null(title.main) | !is.null(title.sub)) {
+
+  graphics::title(main = title.main, sub = title.sub)  
 }
 
 }

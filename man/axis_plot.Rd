@@ -45,6 +45,7 @@ axis_plot(mod, axis = 1, sides = "both", n = 10, species = NULL,
 Creates a lollipop chart of species contributions to ordination axes with scalable point size
 }
 \examples{
+library(vegan)
 data(dune)
 axis_plot(rda(dune), break_interval = 0.5)
 }

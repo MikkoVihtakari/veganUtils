@@ -4,6 +4,7 @@
 ##' @param ... further arguments passed to \code{\link{print}}.
 ##' @method print ggordData
 ##' @export
+##' @importFrom utils head object.size tail
 ##' @author Mikko Vihtakari
 
 print.ggordData <- function(x, ...) {
@@ -14,7 +15,7 @@ print.ggordData <- function(x, ...) {
   cat(NULL, sep = "\n")
   cat(NULL, sep = "\n")
   
-  cat(paste0("File size ", format(object.size(x), units = "Kb")), sep = "\n")
+  cat(paste0("File size ", format(utils::object.size(x), units = "Kb")), sep = "\n")
   cat(NULL, sep = "\n")
   
   cat("Species (column) scores (use $sp to index):", sep = "\n")
@@ -23,7 +24,7 @@ print.ggordData <- function(x, ...) {
   cat(colnames(x$sp), sep = ", ")
   cat(NULL, sep = "\n")
   cat("Species (use $sp$Label to index): ")
-  cat(head(as.character(x$sp$Label), 3), "...", tail(as.character(x$sp$Label), 3), sep = ", ")
+  cat(utils::head(as.character(x$sp$Label), 3), "...", utils::tail(as.character(x$sp$Label), 3), sep = ", ")
   cat(NULL, sep = "\n")
   cat(NULL, sep = "\n")
   

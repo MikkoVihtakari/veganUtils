@@ -19,7 +19,8 @@
 #' @importFrom plyr mapvalues
 #' @importFrom plyr round_any
 #' @author Mikko Vihtakari
-#' @examples data(dune)
+#' @examples library(vegan)
+#' data(dune)
 #' axis_plot(rda(dune), break_interval = 0.5)
 #' @export
 
