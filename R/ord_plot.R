@@ -38,12 +38,12 @@
 # Test params
 # env_data = zy; scaling = "species"; size_preset = "device"; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; orditorp = TRUE; orditorp_air = 1; st_col = "grey70"; st_symbol = "+"; ordihull_st = FALSE; species = TRUE; sp_col = "black"; sp_symbol = 20; sp_symbol_col = "black"; sp_font = 3; latin_sp_names = FALSE; cn_col = "darkolivegreen"; ordi_col = c("lightskyblue1", "lightsalmon1"); envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"); main_cex = NULL; st_cex = NULL; sp_cex = NULL; sp_symbol_cex = NULL; cn_cex = NULL; ordi_cex = NULL; envfits_cex = NULL; main = NULL; axis_labs = TRUE; legend_pos = "topleft"
 
-ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "device", ordisurf_var = NULL, centroids = TRUE, envfits = NULL, orditorp = TRUE, orditorp_air = 1, st_col = "grey70", st_symbol = "+", ordihull_st = FALSE, species = TRUE, sp_col = "black", sp_symbol = 20, sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE, cn_col = "darkolivegreen", ordi_col = c("lightskyblue1", "lightsalmon1"), envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL, st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL, cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL, axis_labs = TRUE, legend_pos = "topleft", title.main = NULL, title.sub = NULL, ...) {
+ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "device", ordisurf_var = NULL, centroids = TRUE, envfits = NULL, orditorp = TRUE, orditorp_air = 1, st_col = "grey70", st_symbol = "+", ordihull_st = FALSE, species = TRUE, sp_col = "black", sp_symbol = 20, sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE, cn_col = "darkolivegreen", ordi_col = c("lightskyblue1", "lightsalmon1"), envfits_col = c("#649971", "#A47399", "#03617E", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL, st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL, cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL, axis_labs = TRUE, legend_pos = "topleft", title.main = NULL, title.sub = NULL, ...) {
 
 size.names <- c("main_cex", "st_cex", "sp_cex", "sp_symbol_cex", "cn_cex", "ordi_cex", "envfits_cex")
 
 sizes <- switch(size_preset,
-  pdf = list(main_cex = 0.7, st_cex = 0.5, sp_cex = 0.7, sp_symbol_cex = 0.2, cn_cex = 0.8, ordi_cex = 0.5, envfits_cex = 0.6),
+  pdf = list(main_cex = 0.7, st_cex = 0.5, sp_cex = 0.7, sp_symbol_cex = 0.2, cn_cex = 0.8, ordi_cex = 0.5, envfits_cex = 0.8),
   device = list(main_cex = 0.9, st_cex = 0.7, sp_cex = 0.8, sp_symbol_cex = 0.3, cn_cex = 0.9, ordi_cex = 0.7, envfits_cex = 1),
   stop(paste("size_preset =", size_preset, "not defined"))
 )
@@ -65,7 +65,7 @@ graphics::par(cex = sizes$main_cex)
 
 ## Base plot
 
-vegan::plot(mod, xlab = "", ylab = "", type = "n", main = main, scaling = scaling, ...)
+plot(mod, xlab = "", ylab = "", type = "n", main = main, scaling = scaling, ...)
 
 if(axis_labs) graphics::title(xlab = paste0(names(axis_expl(mod)[1]), " (", sprintf("%.1f", axis_expl(mod)[1]), "%)"), ylab = paste0(names(axis_expl(mod)[2]), " (", sprintf("%.1f", axis_expl(mod)[2]), "%)"))
 
@@ -92,11 +92,11 @@ if(!is.null(env_data) & st_col %in% names(env_data)) {
   levs <- levels(env_data[[st_col]])
   STMAP <- TRUE
   for(i in seq_along(levs)) {
-    vegan::points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])
+    points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])
   }
 } else {
   STMAP <- FALSE
-  vegan::points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = st_col, scaling = scaling)
+  points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = st_col, scaling = scaling)
 }
 
 ## Ordihull
@@ -120,7 +120,7 @@ if(species){
   if(orditorp) {
   vegan::orditorp(mod, display = "sp", pcol = sp_symbol_col, pch = sp_symbol, air = orditorp_air, col = sp_col, cex = sizes$sp_cex, pcex = sizes$sp_symbol_cex, font = sp_font, scaling = scaling, labels = sp_nams$label, priority = sp_nams$priority)
 } else {
-  vegan::text(mod, display = "sp", col = sp_col, cex = sizes$sp_cex, font = sp_font, scaling = scaling)
+  text(mod, display = "sp", col = sp_col, cex = sizes$sp_cex, font = sp_font, scaling = scaling)
 }
 }
 
@@ -132,7 +132,7 @@ if(!is.null(envfits) & is.vector(envfits)) {
 
     labs <- list(vectors = row.names(ef$vectors$arrows), factors = gsub(paste(names(env_data), collapse = "|"), "", rownames(ef$factors$centroids)))
 
-    vegan::plot(ef, add = TRUE, col = envfits_col[1:length(levs)], label = labs, cex = sizes$envfits_cex, font = 2)
+    plot(ef, add = TRUE, col = envfits_col[1:length(levs)], label = labs, cex = sizes$envfits_cex, font = 2)
 
   } else {
 
@@ -141,7 +141,7 @@ if(!is.null(envfits) & is.vector(envfits)) {
 
     labs <- list(vectors = row.names(ef$vectors$arrows), factors = gsub(paste(names(env_data), collapse = "|"), "", rownames(ef$factors$centroids)))
 
-    vegan::plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
+    plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
     }
   }
 }
@@ -154,10 +154,10 @@ if(!is.null(mod$CCA) & centroids) {
     cents <- names(consts[consts %in% c("factor", "character")])
 
     if(is.null(mod$CCA$centroids)) {
-      vegan::text(mod, display = "cn", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      text(mod, display = "cn", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     } else {
       labs <- Hmisc::capitalize(gsub(paste(cents, collapse = "|"), "", rownames(mod$CCA$centroids)))
-      vegan::text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     }
 }
 

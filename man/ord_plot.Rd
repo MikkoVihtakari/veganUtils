@@ -11,7 +11,7 @@ ord_plot(mod, env_data = NULL, scaling = "species",
   species = TRUE, sp_col = "black", sp_symbol = 20,
   sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE,
   cn_col = "darkolivegreen", ordi_col = c("lightskyblue1",
-  "lightsalmon1"), envfits_col = c("#82C893", "#D696C8", "#056A89",
+  "lightsalmon1"), envfits_col = c("#649971", "#A47399", "#03617E",
   "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL,
   st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL,
   cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL,
@@ -73,10 +73,15 @@ ord_plot(mod, env_data = NULL, scaling = "species",
 
 \item{title.main}{Overlaps with main. Fix.}
 
+\item{title.sub}{character specifying sub-title for the plot.}
+
 \item{...}{parameters passed to \code{\link[vegan]{plot.cca}}}
 }
 \description{
 Alternative to plot vegan's CCA and RDA objects producing illustrative and good looking graphics with less code and need for customization. Plots \code{\link[vegan]{envfit}} and \code{\link[vegan]{ordisurf}} when needed.
+}
+\details{
+While the function produces OK looking plots at the moment (and they seem to be correct too), the function needs to be rewritten to comply with vegan's "dialect". Also some features are redundant. I will do this rewriting at some point in the future when I have time. Also add examples.
 }
 \author{
 Mikko Vihtakari

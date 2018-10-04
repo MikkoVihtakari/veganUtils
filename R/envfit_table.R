@@ -33,8 +33,12 @@ tab <- tab[with(tab, order(Type, -R2)),]
 rownames(tab) <- 1:nrow(tab)
 
 if(clean_var_names) {
-  tab$Variable <- gsub("_", " ",Hmisc::capitalize(tab$Variable))
-  tab$Variable <- gsub("\\.", " ",Hmisc::capitalize(tab$Variable))
+  tab$Variable <- gsub("_", " ", Hmisc::capitalize(tab$Variable))
+  tab$Variable <- gsub("\\.", " ", tab$Variable)
+  tab$Variable <- gsub("\\n", " ", tab$Variable)
+  
+  if(any(tab$Variable %in% "Temp")) tab$Variable[tab$Variable == "Temp"] <- "Temperature"
+  if(any(tab$Variable %in% "Sal")) tab$Variable[tab$Variable == "Sal"] <- "Salinity"
 }
 
 tab
