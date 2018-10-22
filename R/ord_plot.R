@@ -43,7 +43,7 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
 size.names <- c("main_cex", "st_cex", "sp_cex", "sp_symbol_cex", "cn_cex", "ordi_cex", "envfits_cex")
 
 sizes <- switch(size_preset,
-  pdf = list(main_cex = 0.7, st_cex = 0.5, sp_cex = 0.7, sp_symbol_cex = 0.2, cn_cex = 0.8, ordi_cex = 0.5, envfits_cex = 0.8),
+  pdf = list(main_cex = 0.8, st_cex = 0.7, sp_cex = 0.7, sp_symbol_cex = 0.3, cn_cex = 0.8, ordi_cex = 0.5, envfits_cex = 0.8),
   device = list(main_cex = 0.9, st_cex = 0.7, sp_cex = 0.8, sp_symbol_cex = 0.3, cn_cex = 0.9, ordi_cex = 0.7, envfits_cex = 1),
   stop(paste("size_preset =", size_preset, "not defined"))
 )
