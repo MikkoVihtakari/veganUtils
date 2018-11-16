@@ -23,9 +23,11 @@ The package is in **an early developmental phase**, and some **functions do not 
 
 The intention here is not to give instructions for scientifically valid multivariate analyses, but rather to illustrate the differences between *vegan* and *veganUtils* graphics. Refer to the [vegan tutorial](http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf) for instructions how to use *vegan* correctly.
 
+The description under is now finished and will be improved.
+
 ### Non-constrained ordination
 
-Load datasets and make a correspondance analysis object:
+Load datasets and make a principal analysis (`rda`) object:
 
 ```{r message=FALSE}
 library(vegan)
@@ -40,7 +42,7 @@ x <- decostand(BCI, method = "hellinger")
 mod <- rda(x)
 ```
 
-Original *vegan* correspondance analysis ordination graphics
+Original *vegan* ordination graphics
 
 ```{r}
 plot(mod)

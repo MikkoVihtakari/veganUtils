@@ -1,3 +1,8 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
 # veganUtils
 #### Utility functions and extensions to vegan and ggvegan
 
@@ -5,7 +10,7 @@ While the [**vegan**](https://cran.r-project.org/web/packages/vegan/) package is
 
 The **veganUtils** package produces **good looking and illustrative ordination graphics for [vegan](https://cran.r-project.org/web/packages/vegan/) with less code**. The package also contains other utility functions and extensions to improve the output of *vegan* objects together with tools to graphically examine nonlinear relationships in multivariate data. Further, many plotting functions in *veganUtils* are implemented using [**ggplot2**](http://ggplot2.tidyverse.org/reference/). The package complements the vegan and [**ggvegan**](https://github.com/gavinsimpson/ggvegan) packages using solutions from these packages whenever possible.
 
-The package is under development and has not been uploaded to CRAN, but *veganUtils* can be installed directly from GitHUb
+The package is under development and has not been uploaded to CRAN, but *veganUtils* can be installed directly from GitHub
 
 
 ```r
@@ -19,9 +24,11 @@ The package is in **an early developmental phase**, and some **functions do not 
 
 The intention here is not to give instructions for scientifically valid multivariate analyses, but rather to illustrate the differences between *vegan* and *veganUtils* graphics. Refer to the [vegan tutorial](http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf) for instructions how to use *vegan* correctly.
 
+The description under is now finished and will be improved.
+
 ### Non-constrained ordination
 
-Load datasets and make a correspondance analysis object:
+Load datasets and make a principal analysis (`rda`) object:
 
 
 ```r
@@ -37,7 +44,7 @@ x <- decostand(BCI, method = "hellinger")
 mod <- rda(x)
 ```
 
-Original *vegan* correspondance analysis ordination graphics
+Original *vegan* ordination graphics
 
 
 ```r
@@ -87,12 +94,12 @@ envfit_table(mod, BCI.env)
 ```
 ##     Type      Variable   R2     p   PC1   PC2
 ## 1 Factor       Habitat 0.40 0.001    NA    NA
-## 2 Factor        Stream 0.03 0.291    NA    NA
-## 3 Factor       Age.cat 0.01 0.819    NA    NA
+## 2 Factor        Stream 0.03 0.257    NA    NA
+## 3 Factor       Age.cat 0.01 0.825    NA    NA
 ## 4 Factor       Geology 0.00 1.000    NA    NA
 ## 5 Vector        UTM.EW 0.85 0.001 -0.08 -1.00
-## 6 Vector        EnvHet 0.08 0.125  0.08 -1.00
-## 7 Vector        UTM.NS 0.04 0.407  0.42  0.91
+## 6 Vector        EnvHet 0.08 0.135  0.08 -1.00
+## 7 Vector        UTM.NS 0.04 0.410  0.42  0.91
 ## 8 Vector Precipitation 0.00 1.000  0.00  0.00
 ## 9 Vector     Elevation 0.00 1.000  0.00  0.00
 ```
@@ -107,12 +114,12 @@ envfit_table(mod, BCI.env, clean_var_names = TRUE)
 ```
 ##     Type      Variable   R2     p   PC1   PC2
 ## 1 Factor       Habitat 0.40 0.001    NA    NA
-## 2 Factor        Stream 0.03 0.280    NA    NA
-## 3 Factor       Age cat 0.01 0.795    NA    NA
+## 2 Factor        Stream 0.03 0.307    NA    NA
+## 3 Factor       Age cat 0.01 0.812    NA    NA
 ## 4 Factor       Geology 0.00 1.000    NA    NA
 ## 5 Vector        UTM EW 0.85 0.001 -0.08 -1.00
 ## 6 Vector        EnvHet 0.08 0.134  0.08 -1.00
-## 7 Vector        UTM NS 0.04 0.368  0.42  0.91
+## 7 Vector        UTM NS 0.04 0.412  0.42  0.91
 ## 8 Vector Precipitation 0.00 1.000  0.00  0.00
 ## 9 Vector     Elevation 0.00 1.000  0.00  0.00
 ```
