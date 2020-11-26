@@ -25,7 +25,9 @@
 #' @export
 
 #library(tidyverse)
-# mod <- mod1c; axis = 1; n = 10; sides = "contrib"; point_cols = c("#f8766d", "#00ba38"); xlab = NULL; ylab = NULL; sp_names = sp_list; text_col = "white"; map_size = TRUE; point_size = 6; break_interval = 0.5; size_preset = "device"; species = c("Cfin", "Cgla")
+# mod <- ord; axis = 3; n = 10; sides = "contrib"; point_cols = c("#f8766d", "#00ba38"); xlab = NULL; ylab = NULL; sp_names = sp_list; text_col = "white"; map_size = TRUE; point_size = 6; break_interval = 0.5; size_preset = "device"; species = c("Cfin", "Cgla")
+# mod <- ord
+# axis = 3; sides = "both"; n = 10; species = NULL; size_preset = "device"; point_cols = c("#f8766d", "#00ba38"); xlab = NULL; ylab = NULL; sp_names = NULL; italicize_sp_names = FALSE; point_size = NULL; text_col = "white"; map_size = FALSE; break_interval = NULL
 
 axis_plot <- function(mod, axis = 1, sides = "both", n = 10, species = NULL, size_preset = "device", point_cols = c("#f8766d", "#00ba38"), xlab = NULL, ylab = NULL, sp_names = NULL, italicize_sp_names = FALSE, point_size = NULL, text_col = "white", map_size = FALSE, break_interval = NULL) {
 
@@ -33,7 +35,7 @@ axis_plot <- function(mod, axis = 1, sides = "both", n = 10, species = NULL, siz
 
   tmp <- extract_species(mod = mod, axis = axis, sides = sides, species = species, n = n)
 
-  contrib <- 100*scores(mod, scaling = 0, display = "sp")[,axis]^2
+  contrib <- 100*vegan::scores(mod, scaling = 0, display = "sp", choices = axis)[,1]^2
 
   xp <- data.frame(variable = names(tmp), value = unname(tmp))
   xp$variable <- factor(xp$variable, levels = xp$variable)
@@ -41,7 +43,7 @@ axis_plot <- function(mod, axis = 1, sides = "both", n = 10, species = NULL, siz
   xp <- merge(xp, data.frame(variable = names(contrib), contr = unname(contrib)), all.x = TRUE, sort = FALSE)
 
   if(is.null(xlab)) {
-    xlab <- paste(names(axis_expl(mod)[axis]), "value")
+    xlab <- paste(names(axis_expl(mod, axes = axis)), "value")
   }
 
   if(!is.null(sp_names)) {
@@ -92,11 +94,11 @@ if(italicize_sp_names) {
 
   if(is.null(break_interval)) {
     out <- out +
-      coord_flip() +
+      coord_flip(clip = "off") +
       scale_y_continuous(xlab, expand = c(sizes$e1, sizes$e2))
   } else {
     out <- out +
-      coord_flip(ylim = c(xmin, xmax)) +
+      coord_flip(ylim = c(xmin, xmax), clip = "off") +
       scale_y_continuous(name = xlab, breaks = breaks, expand = c(sizes$e1, sizes$e2))
   }
 

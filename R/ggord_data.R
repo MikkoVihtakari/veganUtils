@@ -9,7 +9,7 @@
 #' @seealso \code{\link{ggord_plot}}
 #' @export
 
-# capitalize_cn = FALSE; axes = 1:2; env_data = y
+# capitalize_cn = FALSE; axes = 1:2; env_data = z
 ggord_data <- function(mod, env_data = NULL, axes = 1:2, capitalize_cn = FALSE) {
 
 ## Data ####
@@ -41,7 +41,7 @@ sp <- droplevels(sp)
 ## Sites / rows
 st <- subset(x, Score == "sites")
 st <- droplevels(st)
-rownames(st) <- gsub("[[:alpha:]]" , "", as.character(st$Label))
+rownames(st) <- as.character(st$Label) #gsub("[[:alpha:]]" , "", as.character(st$Label))
 
 if(CONST) {
   const_cols <- select(strsplit(as.character(mod$call)[2], "~"), 2)
@@ -99,7 +99,7 @@ if(capitalize_cn & CONST) {
 if(is.null(env_data)) {
   ENV <- FALSE
 } else {
- if(any(rownames(st) != rownames(env_data))) stop("rownames of sites and env_data do not match.")
+ if(any(gsub("\\D", "", rownames(st)) != rownames(env_data))) stop("rownames of sites and env_data do not match.")
   st <- cbind(st, env_data)
   ENV <- TRUE
 }

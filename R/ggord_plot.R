@@ -171,41 +171,46 @@ if(CONST) {
 
 ## Species labels
 
-if(sp_repel_method %in% c("ggrepel", "label_omit")) {
-
+if(!is.null(sp_repel_method)) {
+  if( sp_repel_method %in% c("ggrepel", "label_omit")) {
+    
     levels(sp$Label)[levels(sp$Label) %in% sp[abs(sp$AX1) < sp_label_omit & abs(sp$AX2) < sp_label_omit, "Label"]] <- ""
-  sp_points <- sp[sp$Label == "",]
-
-} else if(sp_repel_method == "orditorp") {
-  ## Code below modified from orditorp. Main author: Jari Oksanen
-
-  labels <- sp$Label
-  priority <- rowSums((scale(sp[c("AX1", "AX2")])^2))
-
-  w <- abs(strwidth(labels, cex = 1, units = "figure"))/2 * air
-  h <- abs(strheight(labels, cex = 1, units = "figure"))/2 * air
-
-  xx <- cbind(sp[["AX1"]] - w, sp[["AX1"]] + w, sp[["AX2"]] - h, sp[["AX2"]] + h)
-  is.na(priority) <- w == 0
-  ord <- rev(order(priority, na.last = FALSE))
-  xx <- xx[ord, ]
-  sp <- sp[ord, ]
-  labels <- sp$Label
-  tt <- logical(nrow(xx))
-  tt[1] <- TRUE
-  for (i in 2:(nrow(xx) - sum(is.na(priority)))) {
-        j <- 1:(i - 1)
-        j <- j[tt[j]]
-        tt[i] <- all(xx[i, 1] > xx[j, 2] | xx[j, 1] > xx[i, 2] |
+    sp_points <- sp[sp$Label == "",]
+    
+  } else if(sp_repel_method == "orditorp") {
+    ## Code below modified from orditorp. Main author: Jari Oksanen
+    
+    labels <- sp$Label
+    priority <- rowSums((scale(sp[c("AX1", "AX2")])^2))
+    
+    w <- abs(strwidth(labels, cex = 1, units = "figure"))/2 * air
+    h <- abs(strheight(labels, cex = 1, units = "figure"))/2 * air
+    
+    xx <- cbind(sp[["AX1"]] - w, sp[["AX1"]] + w, sp[["AX2"]] - h, sp[["AX2"]] + h)
+    is.na(priority) <- w == 0
+    ord <- rev(order(priority, na.last = FALSE))
+    xx <- xx[ord, ]
+    sp <- sp[ord, ]
+    labels <- sp$Label
+    tt <- logical(nrow(xx))
+    tt[1] <- TRUE
+    for (i in 2:(nrow(xx) - sum(is.na(priority)))) {
+      j <- 1:(i - 1)
+      j <- j[tt[j]]
+      tt[i] <- all(xx[i, 1] > xx[j, 2] | xx[j, 1] > xx[i, 2] |
                      xx[i, 3] > xx[j, 4] | xx[j, 3] > xx[i, 4])
     }
-
-  sp_text <- sp[tt, , drop = FALSE]
-  sp_points <- sp[!sp$Label %in% unique(sp_text$Label),]
-
+    
+    sp_text <- sp[tt, , drop = FALSE]
+    sp_points <- sp[!sp$Label %in% unique(sp_text$Label),]
+    
+  }
 }
 
-if(sp_repel_method == "ggrepel") {
+if(is.null(sp_repel_method)) {
+  out +
+    geom_text(data = sp, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
+} else if(sp_repel_method == "ggrepel") {
   # ####
   out +
     geom_point(data = sp, aes(x = AX1, y = AX2), shape = "+", color = sp_cross_col, size = FS(sizes$sp_size), alpha = 0.6) +
@@ -224,8 +229,7 @@ if(sp_repel_method == "ggrepel") {
   geom_text(data = sp_text, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
 # ####
   } else {
-  out +
-  geom_text(data = sp, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
+  stop("Wrong sp_repel_method argument")
 }
 
 }

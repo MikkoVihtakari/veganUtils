@@ -4,16 +4,34 @@
 \alias{ggord_plot}
 \title{Alternative ordination plot for CCA and RDA objects (ggplot2)}
 \usage{
-ggord_plot(mod, env_data = NULL, axes = 1:2, size_preset = "device",
-  arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE,
-  envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1,
-  capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3",
-  sp_cross_col = "red", sp_symbol, sp_symbol_col,
-  cn_col = "darkolivegreen", ordi_col = "lightskyblue1",
+ggord_plot(
+  mod,
+  env_data = NULL,
+  axes = 1:2,
+  size_preset = "device",
+  arrow.mul = NULL,
+  ordisurf_var = NULL,
+  centroids = TRUE,
+  envfits = NULL,
+  sp_repel_method = "orditorp",
+  sp_label_omit = 0.1,
+  capitalize_cn = TRUE,
+  site_col = "grey70",
+  sp_col = "firebrick3",
+  sp_cross_col = "red",
+  sp_symbol,
+  sp_symbol_col,
+  cn_col = "darkolivegreen",
+  ordi_col = "lightskyblue1",
   envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"),
-  base_size = NULL, site_size = NULL, sp_size = NULL,
-  cn_size = NULL, ordi_size = NULL, envfits_size = NULL,
-  main = NULL)
+  base_size = NULL,
+  site_size = NULL,
+  sp_size = NULL,
+  cn_size = NULL,
+  ordi_size = NULL,
+  envfits_size = NULL,
+  main = NULL
+)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.}

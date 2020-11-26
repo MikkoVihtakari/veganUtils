@@ -4,19 +4,43 @@
 \alias{ord_plot}
 \title{Alternative ordination plot for CCA and RDA objects (base graphics)}
 \usage{
-ord_plot(mod, env_data = NULL, scaling = "species",
-  size_preset = "device", ordisurf_var = NULL, centroids = TRUE,
-  envfits = NULL, orditorp = TRUE, orditorp_air = 1,
-  st_col = "grey70", st_symbol = "+", ordihull_st = FALSE,
-  species = TRUE, sp_col = "black", sp_symbol = 20,
-  sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE,
-  cn_col = "darkolivegreen", ordi_col = c("lightskyblue1",
-  "lightsalmon1"), envfits_col = c("#649971", "#A47399", "#03617E",
-  "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL,
-  st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL,
-  cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL,
-  axis_labs = TRUE, legend_pos = "topleft", title.main = NULL,
-  title.sub = NULL, ...)
+ord_plot(
+  mod,
+  env_data = NULL,
+  scaling = "species",
+  size_preset = "device",
+  ordisurf_var = NULL,
+  centroids = TRUE,
+  envfits = NULL,
+  orditorp = TRUE,
+  orditorp_air = 1,
+  st_col = "grey70",
+  st_symbol = "+",
+  ordihull_st = FALSE,
+  species = TRUE,
+  sp_col = "black",
+  sp_symbol = 20,
+  sp_symbol_col = "black",
+  sp_font = 3,
+  latin_sp_names = FALSE,
+  cn_col = "darkolivegreen",
+  ordi_col = c("lightskyblue1", "lightsalmon1"),
+  envfits_col = c("#649971", "#A47399", "#03617E", "#B5794C", "#FF9252", "#FF5F68",
+    "#449BCF"),
+  main_cex = NULL,
+  st_cex = NULL,
+  sp_cex = NULL,
+  sp_symbol_cex = NULL,
+  cn_cex = NULL,
+  ordi_cex = NULL,
+  envfits_cex = NULL,
+  main = NULL,
+  axis_labs = TRUE,
+  legend_pos = "topleft",
+  title.main = NULL,
+  title.sub = NULL,
+  ...
+)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.}

@@ -4,8 +4,17 @@
 \alias{pattern_plot}
 \title{Facet grid to examine patterns in multivariate data (ggplot2)}
 \usage{
-pattern_plot(mod, axis = 1, sides = "both", n = 10, species = NULL,
-  expls = NULL, log_trans = FALSE, X = NULL, Y = NULL)
+pattern_plot(
+  mod,
+  axis = 1,
+  sides = "both",
+  n = 10,
+  species = NULL,
+  expls = NULL,
+  log_trans = FALSE,
+  X = NULL,
+  Y = NULL
+)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.}

@@ -89,7 +89,7 @@ if(!is.null(ordisurf_var)) {
 ## Sites
 
 if(!is.null(env_data) & st_col %in% names(env_data)) {
-  levs <- levels(env_data[[st_col]])
+  levs <- unique(env_data[[st_col]])
   STMAP <- TRUE
   for(i in seq_along(levs)) {
     points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])

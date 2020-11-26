@@ -4,11 +4,23 @@
 \alias{axis_plot}
 \title{Lollipop chart of species contributions to ordination axes (ggplot2)}
 \usage{
-axis_plot(mod, axis = 1, sides = "both", n = 10, species = NULL,
-  size_preset = "device", point_cols = c("#f8766d", "#00ba38"),
-  xlab = NULL, ylab = NULL, sp_names = NULL,
-  italicize_sp_names = FALSE, point_size = NULL, text_col = "white",
-  map_size = FALSE, break_interval = NULL)
+axis_plot(
+  mod,
+  axis = 1,
+  sides = "both",
+  n = 10,
+  species = NULL,
+  size_preset = "device",
+  point_cols = c("#f8766d", "#00ba38"),
+  xlab = NULL,
+  ylab = NULL,
+  sp_names = NULL,
+  italicize_sp_names = FALSE,
+  point_size = NULL,
+  text_col = "white",
+  map_size = FALSE,
+  break_interval = NULL
+)
 }
 \arguments{
 \item{mod}{\code{\link[vegan]{cca}} or rda object}

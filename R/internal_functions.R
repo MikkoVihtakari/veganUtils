@@ -20,11 +20,13 @@ LS <- function(x) x/2.13
 #' @param species A character vector of species entries to be forced to the plot. The remaining of species will be taken from \code{sides} and \code{n} arguments.
 #' @param n Number of columns (=species) to show
 #' @keywords internal
+#' @import vegan
 #' @author Mikko Vihtakari
 
+# mod = mod; axis = axis; sides = sides; species = species; n = n
 extract_species <- function(mod, axis, sides, species, n) {
-  tmp <- scores(mod, display = "sp")[,axis]
-  contrib <- 100*scores(mod, scaling = 0, display = "sp")[,axis]^2
+  tmp <- vegan::scores(mod, display = "sp", choices = axis)[,1]
+  contrib <- 100*vegan::scores(mod, scaling = 0, display = "sp", choices = axis)[,1]^2
 
    if(!all(species %in% names(tmp))) stop("species could not be found from the mod object. Check the species argument")
 
