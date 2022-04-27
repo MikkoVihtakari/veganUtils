@@ -53,7 +53,11 @@ air <- 1 # orditorp parameter. Add to arguments perhaps
 ## Data
 x <- ggplot2::fortify(mod)
 
-if(is.null(mod$CCA)) {
+if(any(grepl("MDS", class(mod)))) {
+  CONST <- FALSE
+  tmp <- names(x)[grep("MDS", names(x))]
+  names(x)[names(x) %in% tmp] <- paste0("AX", gsub("[[:alpha:]]", "", tmp))
+} else if(is.null(mod$CCA)) {
   CONST <- FALSE
   tmp <- names(x)[grep("(CA)|(PC)", names(x))]
   names(x)[names(x) %in% tmp] <- paste0("AX", gsub("[[:alpha:]]", "", tmp))

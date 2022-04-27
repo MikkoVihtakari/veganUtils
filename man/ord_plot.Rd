@@ -67,7 +67,11 @@ ord_plot(
 
 \item{ordihull_st}{logical indicating whether \code{\link{ordihull}} should be drawn around sites if site colors are scaled to \code{env_data} (see \code{st_col}).}
 
+\item{species}{logical indicating whether to show the species labels.}
+
 \item{sp_col}{character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).}
+
+\item{sp_symbol_col}{character specifying the color for species symbols.}
 
 \item{sp_font}{An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.}
 
@@ -92,6 +96,8 @@ ord_plot(
 \item{envfits_cex}{cex parameter for \code{\link[vegan]{envfit}} objects.}
 
 \item{main}{character specifying title for the plot. Overlaps with title.main. Fix.}
+
+\item{axis_labs}{logical indicating whether to plot axis labels.}
 
 \item{legend_pos}{character specifying the location of legend (only added if colors are mapped to variables). Set to \code{NULL} to remove the legend.}
 

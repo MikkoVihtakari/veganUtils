@@ -35,6 +35,8 @@ italicize_taxa <- function(x, type = "markdown", clean_names = TRUE) {
         paste0(chars$stchar, k[1], chars$endchar, chars$midchar, k[2])
       } else if(k[2] == "indet.") {
         paste0(k, collapse = chars$midchar)
+      } else if(k[1] == "Benthic") {
+        paste0(k, collapse = chars$midchar)
       } else {
         paste0(chars$stchar, paste(k, collapse = chars$midchar), chars$endchar)
       }

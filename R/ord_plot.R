@@ -10,9 +10,11 @@
 #' @param orditorp logical indicating whether \code{\link[vegan]{orditorp}} should be used to avoid cluttered species names.
 #' @param st_col character specifying the color for sites (\code{display = "sites"} in \code{\link[vegan]{plot.cca}}). Alternatively column name in \code{env_data} and site color will be scaled to levels in the variable. Colors will be taken from the \code{envfits_col} argument.
 #' @param sp_col character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).
+#' @param sp_symbol_col character specifying the color for species symbols.
 #' @param cn_col character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).
 #' @param ordi_col character specifying the color for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects.
+#' @param species logical indicating whether to show the species labels.
 #' @param main_cex cex parameter for axes titles (\code{\link[graphics]{par}(cex)}).
 #' @param sp_font An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.
 #' @param st_symbol,sp_symbol \code{\link[graphics]{pch}} code for site and species symbols, respectively.
@@ -27,16 +29,19 @@
 #' @param ordi_cex cex parameter for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_cex cex parameter for \code{\link[vegan]{envfit}} objects.
 #' @param legend_pos character specifying the location of legend (only added if colors are mapped to variables). Set to \code{NULL} to remove the legend.
+#' @param axis_labs logical indicating whether to plot axis labels.
+#' 
 #' @param title.sub character specifying sub-title for the plot.
 #' @param ... parameters passed to \code{\link[vegan]{plot.cca}}
 #' @details While the function produces OK looking plots at the moment (and they seem to be correct too), the function needs to be rewritten to comply with vegan's "dialect". Also some features are redundant. I will do this rewriting at some point in the future when I have time. Also add examples.
 #' @import vegan
 #' @importFrom Hmisc capitalize
+#' @importFrom graphics points strheight strwidth text
 #' @author Mikko Vihtakari
 #' @export
 
 # Test params
-# env_data = zy; scaling = "species"; size_preset = "device"; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; orditorp = TRUE; orditorp_air = 1; st_col = "grey70"; st_symbol = "+"; ordihull_st = FALSE; species = TRUE; sp_col = "black"; sp_symbol = 20; sp_symbol_col = "black"; sp_font = 3; latin_sp_names = FALSE; cn_col = "darkolivegreen"; ordi_col = c("lightskyblue1", "lightsalmon1"); envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"); main_cex = NULL; st_cex = NULL; sp_cex = NULL; sp_symbol_cex = NULL; cn_cex = NULL; ordi_cex = NULL; envfits_cex = NULL; main = NULL; axis_labs = TRUE; legend_pos = "topleft"
+# env_data = y; scaling = "species"; size_preset = "device"; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; orditorp = TRUE; orditorp_air = 1; st_col = "grey70"; st_symbol = "+"; ordihull_st = FALSE; species = TRUE; sp_col = "black"; sp_symbol = 20; sp_symbol_col = "black"; sp_font = 3; latin_sp_names = FALSE; cn_col = "darkolivegreen"; ordi_col = c("lightskyblue1", "lightsalmon1"); envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"); main_cex = NULL; st_cex = NULL; sp_cex = NULL; sp_symbol_cex = NULL; cn_cex = NULL; ordi_cex = NULL; envfits_cex = NULL; main = NULL; axis_labs = TRUE; legend_pos = "topleft"
 
 ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "device", ordisurf_var = NULL, centroids = TRUE, envfits = NULL, orditorp = TRUE, orditorp_air = 1, st_col = "grey70", st_symbol = "+", ordihull_st = FALSE, species = TRUE, sp_col = "black", sp_symbol = 20, sp_symbol_col = "black", sp_font = 3, latin_sp_names = FALSE, cn_col = "darkolivegreen", ordi_col = c("lightskyblue1", "lightsalmon1"), envfits_col = c("#649971", "#A47399", "#03617E", "#B5794C", "#FF9252", "#FF5F68", "#449BCF"), main_cex = NULL, st_cex = NULL, sp_cex = NULL, sp_symbol_cex = NULL, cn_cex = NULL, ordi_cex = NULL, envfits_cex = NULL, main = NULL, axis_labs = TRUE, legend_pos = "topleft", title.main = NULL, title.sub = NULL, ...) {
 
@@ -154,7 +159,7 @@ if(!is.null(mod$CCA) & centroids) {
     cents <- names(consts[consts %in% c("factor", "character")])
 
     if(is.null(mod$CCA$centroids)) {
-      text(mod, display = "cn", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      text(mod, display = "bp", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     } else {
       labs <- Hmisc::capitalize(gsub(paste(cents, collapse = "|"), "", rownames(mod$CCA$centroids)))
       text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
