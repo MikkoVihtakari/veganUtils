@@ -9,7 +9,7 @@
 # type = "markdown"; clean_names = TRUE
 italicize_taxa <- function(x, type = "markdown", clean_names = TRUE) {
 
-  if(class(x) != "character") x <- as.character(x)
+  if(!inherits(x, "character")) x <- as.character(x)
   x <- trimws(x)
 
   if(clean_names) {

@@ -19,6 +19,7 @@ ord_plot(
   ordihull_st = FALSE,
   species = TRUE,
   sp_col = "black",
+  sp_arrow = FALSE,
   sp_symbol = 20,
   sp_symbol_col = "black",
   sp_font = 3,
@@ -71,6 +72,8 @@ ord_plot(
 
 \item{sp_col}{character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).}
 
+\item{sp_arrow}{logical indicating whether biplot arrows should be plotted for species.}
+
 \item{sp_symbol_col}{character specifying the color for species symbols.}
 
 \item{sp_font}{An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.}
@@ -114,5 +117,5 @@ Alternative to plot vegan's CCA and RDA objects producing illustrative and good 
 While the function produces OK looking plots at the moment (and they seem to be correct too), the function needs to be rewritten to comply with vegan's "dialect". Also some features are redundant. I will do this rewriting at some point in the future when I have time. Also add examples.
 }
 \author{
-Mikko Vihtakari
+Mikko Vihtakari with code from Jari Oksanen and Gavin Simpson
 }
