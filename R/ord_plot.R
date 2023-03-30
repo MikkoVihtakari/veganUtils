@@ -54,7 +54,6 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
                   stop(paste("size_preset =", size_preset, "not defined"))
   )
   
-  
   # k <- size.names[4]
   sizes <- lapply(size.names, function(k) {
     if(is.null(get(k))) {
@@ -146,6 +145,11 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
   
   ## Envfit
   
+  if(!is.null(env_data) & is.null(envfits) & is.null(mod$CCA)) {
+    envfits <- apply(env_data, 2, function(k) length(unique(k)) > 1)
+    envfits <- names(envfits)[envfits]
+  }
+  
   if(!is.null(envfits) & is.vector(envfits)) {
     if(length(envfits) == 1 & all(envfits == st_col) & STMAP) {
       ef <- vegan::envfit(mod, env_data[envfits])
@@ -164,7 +168,7 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
         plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
       }
     }
-  }
+  } 
   
   ## Centroids and biplot arrows
   
@@ -176,8 +180,10 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
     if(is.null(mod$CCA$centroids)) {
       text(mod, display = "bp", col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     } else {
-      labs <- Hmisc::capitalize(gsub(paste(cents, collapse = "|"), "", rownames(mod$CCA$centroids)))
-      text(mod, display = "cn", labels = labs, col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
+      # labs <- Hmisc::capitalize(gsub(paste(cents, collapse = "|"), "", rownames(mod$CCA$centroids)))
+      text(mod, display = "cn", 
+           # labels = labs, 
+           col = cn_col, cex = sizes$cn_cex, font = 2, scaling = scaling)
     }
   }
   

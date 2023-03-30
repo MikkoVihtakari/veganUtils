@@ -1,5 +1,6 @@
 #' @title Alternative ordination plot for CCA and RDA objects (ggplot2)
 #' @description Alternative to plot vegan's CCA and RDA objects using ggplot2. Produces illustrative and good looking graphics with less code and need for customization. Plots \code{\link[vegan]{envfit}} and \code{\link[vegan]{ordisurf}} when needed.
+#' @inheritParams ord_plot
 #' @param mod \code{\link[vegan]{cca}} or \code{\link[vegan]{rda}} object from vegan.
 #' @param env_data optional data frame containing environmental data, which should be fitted using the \code{\link[vegan]{envfit}} and/or \code{\link[vegan]{ordisurf}} functions. The data frame must have the same row order and number than the species data frame used to construct \code{mod}.
 #' @param axes numeric vector defining two ordination axes for the plot.
@@ -14,8 +15,6 @@
 #' @param site_col character specifying the color for sites (\code{display = "sites"} in \code{\link[vegan]{plot.cca}}).
 #' @param sp_col character specifying the color for species (\code{display = "species"} in \code{\link[vegan]{plot.cca}}).
 #' @param sp_cross_col character specifying the color for omited species label symbols (\code{+}).
-#' @param sp_symbol Ignored.
-#' @param sp_symbol_col Ignored.
 #' @param cn_col character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).
 #' @param ordi_col character specifying the color for \code{\link[vegan]{ordisurf}}.
 #' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects.
@@ -27,15 +26,15 @@
 #' @param envfits_size cex parameter for \code{\link[vegan]{envfit}} objects.
 #' @param main character giving the title for the plot. See \code{\link[ggplot2]{ggtitle}}
 #' @details All font sizes should be specified using actual font sizes (not ggplot font sizes).
-#' @import ggvegan vegan ggplot2 ggrepel
+#' @import vegan ggplot2 ggrepel
 #' @importFrom Hmisc capitalize
-#' @author Mikko Vihtakari with borrowed code from Jari Oksanen
+#' @author Mikko Vihtakari with code from Jari Oksanen
 #' @export
 
 # mod = mod1c;
-# axes = 1:2; env_data = NULL; axes = 1:2; size_preset = "device"; arrow.mul = NULL; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; sp_repel_method = "orditorp"; sp_label_omit = 0.1; capitalize_cn = TRUE; site_col = "grey70"; sp_col = "firebrick3"; sp_cross_col = "red"; cn_col = "darkolivegreen"; ordi_col = "lightskyblue1"; envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"); base_size = NULL; site_size = NULL; sp_size = NULL; cn_size = NULL; ordi_size = NULL; envfits_size = NULL; main = NULL
+# env_data = NULL; axes = 1:2; size_preset = "device"; arrow.mul = NULL; ordisurf_var = NULL; centroids = TRUE; envfits = NULL; sp_repel_method = "orditorp"; sp_label_omit = 0.1; capitalize_cn = TRUE; site_col = "grey70"; sp_col = "firebrick3"; sp_cross_col = "red"; sp_arrow = FALSE; cn_col = "darkolivegreen"; ordi_col = "lightskyblue1"; envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"); base_size = NULL; site_size = NULL; sp_size = NULL; cn_size = NULL; ordi_size = NULL; envfits_size = NULL; main = NULL
 
-ggord_plot <- function(mod, env_data = NULL, axes = 1:2, size_preset = "device", arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE, envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1, capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3", sp_cross_col = "red", sp_symbol, sp_symbol_col, cn_col = "darkolivegreen", ordi_col = "lightskyblue1", envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"), base_size = NULL, site_size = NULL, sp_size = NULL, cn_size = NULL, ordi_size = NULL, envfits_size = NULL, main = NULL) {
+ggord_plot <- function(mod, env_data = NULL, axes = 1:2, size_preset = "device", arrow.mul = NULL, ordisurf_var = NULL, centroids = TRUE, envfits = NULL, sp_repel_method = "orditorp", sp_label_omit = 0.1, capitalize_cn = TRUE, site_col = "grey70", sp_col = "firebrick3", sp_cross_col = "red", sp_arrow = FALSE, cn_col = "darkolivegreen", ordi_col = "lightskyblue1", envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"), base_size = NULL, site_size = NULL, sp_size = NULL, cn_size = NULL, ordi_size = NULL, envfits_size = NULL, main = NULL) {
 
 ## Switches and definitions ####
 
@@ -51,7 +50,7 @@ sizes <- switch(size_preset,
 air <- 1 # orditorp parameter. Add to arguments perhaps
 
 ## Data
-x <- ggplot2::fortify(mod)
+x <- scores(mod, tidy = TRUE)
 
 if(any(grepl("MDS", class(mod)))) {
   CONST <- FALSE
@@ -73,34 +72,34 @@ if(any(grepl("MDS", class(mod)))) {
 }
 
 ## Select axes
-x <- x[c("Score", "Label", paste0("AX", axes))]
+x <- x[c("score", "label", paste0("AX", axes))]
 names(x)[grepl("AX", names(x))] <- c("AX1", "AX2") # This is needed for ggplot. Scary, but should work
 
 ## Species /  columns
-sp <- subset(x, Score == "species")
+sp <- subset(x, score == "species")
 sp <- droplevels(sp)
 
 ## Sites / rows
-st <- subset(x, Score == "sites")
+st <- subset(x, score == "sites")
 st <- droplevels(st)
 
 if(CONST) {
   
-  const_cols <- select(strsplit(as.character(mod$call)[2], "~"), 2)
+  const_cols <- sapply(strsplit(as.character(mod$call)[2], "~"), "[", 2)
   const_cols <- trimws(unlist(strsplit(const_cols, "\\+")))
 
-  bp <- subset(x, Score == "biplot")
+  bp <- subset(x, score == "biplot")
   bp <- droplevels(bp)
 
-  if(any(levels(x$Score) %in% "centroids")) {
+  if(any(levels(x$score) %in% "centroids")) {
     CENT <- TRUE # means centroids (i.e. factor level constrains)
-    cn <- subset(x, Score == "centroids")
+    cn <- subset(x, score == "centroids")
     cn <- droplevels(cn)
 
-    cn_labs <- gsub(paste(const_cols, collapse = "|"), "", cn$Label)
-    cn_cols <- unique(gsub(paste(cn_labs, collapse = "|"), "", cn$Label))
+    cn_labs <- gsub(paste(const_cols, collapse = "|"), "", cn$label)
+    cn_cols <- unique(gsub(paste(cn_labs, collapse = "|"), "", cn$label))
 
-    bp <- bp[!bp$Label %in% grep(paste(cn_cols, collapse = "|"), bp$Label, value = TRUE),]
+    bp <- bp[!bp$label %in% grep(paste(cn_cols, collapse = "|"), bp$label, value = TRUE),]
     bp <- droplevels(bp)
 
     if(nrow(bp) > 0) BPARR <- TRUE else BPARR <- FALSE # means biplot constraints (i.e. vector constraints)
@@ -115,20 +114,25 @@ if(capitalize_cn & CONST) {
 
   # i <- 1
   if(CENT) {
-    levels(cn$Label) <- sapply(seq_along(levels(cn$Label)), function(i) {
+    
+    if(!inherits(cn$label, "factor")) cn$label <- factor(cn$label)
+    levels(cn$label) <- sapply(seq_along(levels(cn$label)), function(i) {
 
-    k <- gsub(paste(const_cols, collapse = "|"), "", levels(cn$Label)[i])
+    k <- gsub(paste(const_cols, collapse = "|"), "", levels(cn$label)[i])
 
     if(k == "") {
-      levels(cn$Label)[i]
+      levels(cn$label)[i]
     } else {
       k
     }
   })
 }
 
-  if(BPARR) levels(bp$Label) <- Hmisc::capitalize(levels(bp$Label))
-  #levels(cn$Label) <- Hmisc::capitalize(levels(cn$Label))
+  if(BPARR) {
+    if(!inherits(bp$label, "factor")) bp$label <- factor(bp$label)
+    levels(bp$label) <- Hmisc::capitalize(levels(bp$label))
+  }
+  #levels(cn$label) <- Hmisc::capitalize(levels(cn$label))
 }
 
 axislabs <- axis_expl(mod, axes = axes)
@@ -140,8 +144,12 @@ if(is.null(arrow.mul) & CONST) {
 # ####
 
 out <- ggplot() +
-  geom_hline(yintercept = 0, size = LS(0.5), color = "grey50", linetype = 2) +
-  geom_vline(xintercept = 0, size = LS(0.5), color = "grey50", linetype = 2) +
+  geom_hline(yintercept = 0, linewidth = LS(0.5), color = "grey50", linetype = 2) +
+  geom_vline(xintercept = 0, linewidth = LS(0.5), color = "grey50", linetype = 2) + {
+    if(sp_arrow) geom_segment(data = sp,
+                              aes(x = 0, xend = AX1*0.85, y = 0, yend = AX2*0.85), 
+                              color = sp_col, arrow = arrow(length = unit(0.01, "npc")))
+  } +
   geom_point(data = st, aes(x = AX1, y = AX2), shape = 20, size = sizes$site_size, color = site_col) +
   xlab(paste0(names(axislabs[1]), " (", sprintf("%.1f", axislabs[1]), "%)")) +
   ylab(paste0(names(axislabs[2]), " (", sprintf("%.1f", axislabs[2]), "%)")) +
@@ -160,14 +168,14 @@ if(!is.null(main)) {
 if(CONST) {
   if(BPARR) {
     out <- out +
-    geom_segment(data = bp, aes(x = 0, xend = arrow.mul*AX1, y = 0, yend = arrow.mul*AX2, group = Label),
+    geom_segment(data = bp, aes(x = 0, xend = arrow.mul*AX1, y = 0, yend = arrow.mul*AX2, group = label),
     arrow = arrow(length = unit(0.5, "lines")), size = LS(1), color = cn_col) +
-    geom_text(data = bp, aes(x = arrow.mul*AX1*1.14, y = arrow.mul*AX2*1.04, label = Label, fontface = 2),
+    geom_text(data = bp, aes(x = arrow.mul*AX1*1.14, y = arrow.mul*AX2*1.04, label = label, fontface = 2),
     size = FS(sizes$cn_size), color = cn_col)
   }
 
   if(CENT) {
-    out <- out + geom_text(data = cn, aes(x = AX1, y = AX2, label = Label, fontface = 2),
+    out <- out + geom_text(data = cn, aes(x = AX1, y = AX2, label = label, fontface = 2),
     size = FS(sizes$cn_size), color = cn_col)
   }
 
@@ -176,15 +184,15 @@ if(CONST) {
 ## Species labels
 
 if(!is.null(sp_repel_method)) {
-  if( sp_repel_method %in% c("ggrepel", "label_omit")) {
+  if(sp_repel_method %in% c("ggrepel", "label_omit")) {
     
-    levels(sp$Label)[levels(sp$Label) %in% sp[abs(sp$AX1) < sp_label_omit & abs(sp$AX2) < sp_label_omit, "Label"]] <- ""
-    sp_points <- sp[sp$Label == "",]
+    levels(sp$label)[levels(sp$label) %in% sp[abs(sp$AX1) < sp_label_omit & abs(sp$AX2) < sp_label_omit, "label"]] <- ""
+    sp_points <- sp[sp$label == "",]
     
   } else if(sp_repel_method == "orditorp") {
     ## Code below modified from orditorp. Main author: Jari Oksanen
     
-    labels <- sp$Label
+    labels <- sp$label
     priority <- rowSums((scale(sp[c("AX1", "AX2")])^2))
     
     w <- abs(strwidth(labels, cex = 1, units = "figure"))/2 * air
@@ -195,7 +203,7 @@ if(!is.null(sp_repel_method)) {
     ord <- rev(order(priority, na.last = FALSE))
     xx <- xx[ord, ]
     sp <- sp[ord, ]
-    labels <- sp$Label
+    labels <- sp$label
     tt <- logical(nrow(xx))
     tt[1] <- TRUE
     for (i in 2:(nrow(xx) - sum(is.na(priority)))) {
@@ -206,31 +214,31 @@ if(!is.null(sp_repel_method)) {
     }
     
     sp_text <- sp[tt, , drop = FALSE]
-    sp_points <- sp[!sp$Label %in% unique(sp_text$Label),]
+    sp_points <- sp[!sp$label %in% unique(sp_text$label),]
     
   }
 }
 
 if(is.null(sp_repel_method)) {
   out +
-    geom_text(data = sp, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
+    geom_text(data = sp, aes(x = AX1, y = AX2, label = label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
 } else if(sp_repel_method == "ggrepel") {
   # ####
   out +
     geom_point(data = sp, aes(x = AX1, y = AX2), shape = "+", color = sp_cross_col, size = FS(sizes$sp_size), alpha = 0.6) +
-    geom_text_repel(data = sp, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2, segment.size = LS(0.5), min.segment.length = 0, force = 1)
+    geom_text_repel(data = sp, aes(x = AX1, y = AX2, label = label), color = sp_col, size = FS(sizes$sp_size), fontface = 2, segment.size = LS(0.5), min.segment.length = 0, force = 1)
   # ####
 } else if(sp_repel_method == "label_omit") {
   # ####
   out +
   geom_point(data = sp_points, aes(x = AX1, y = AX2), shape = "+", color = sp_cross_col, size = FS(sizes$sp_size)) +
-    geom_text(data = sp, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
+    geom_text(data = sp, aes(x = AX1, y = AX2, label = label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
   # ####
 } else if(sp_repel_method == "orditorp") {
 # ####
   out +
     geom_point(data = sp_points, aes(x = AX1, y = AX2), shape = "+", color = sp_cross_col, size = FS(sizes$sp_size), alpha = 0.5) +
-  geom_text(data = sp_text, aes(x = AX1, y = AX2, label = Label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
+  geom_text(data = sp_text, aes(x = AX1, y = AX2, label = label), color = sp_col, size = FS(sizes$sp_size), fontface = 2)
 # ####
   } else {
   stop("Wrong sp_repel_method argument")

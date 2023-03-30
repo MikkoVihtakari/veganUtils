@@ -19,8 +19,7 @@ ggord_plot(
   site_col = "grey70",
   sp_col = "firebrick3",
   sp_cross_col = "red",
-  sp_symbol,
-  sp_symbol_col,
+  sp_arrow = FALSE,
   cn_col = "darkolivegreen",
   ordi_col = "lightskyblue1",
   envfits_col = c("#82C893", "#D696C8", "#056A89", "#B5794C", "#FF9252"),
@@ -62,9 +61,7 @@ ggord_plot(
 
 \item{sp_cross_col}{character specifying the color for omited species label symbols (\code{+}).}
 
-\item{sp_symbol}{Ignored.}
-
-\item{sp_symbol_col}{Ignored.}
+\item{sp_arrow}{logical indicating whether biplot arrows should be plotted for species.}
 
 \item{cn_col}{character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).}
 
@@ -93,5 +90,5 @@ Alternative to plot vegan's CCA and RDA objects using ggplot2. Produces illustra
 All font sizes should be specified using actual font sizes (not ggplot font sizes).
 }
 \author{
-Mikko Vihtakari with borrowed code from Jari Oksanen
+Mikko Vihtakari with code from Jari Oksanen
 }

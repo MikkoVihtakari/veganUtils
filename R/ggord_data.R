@@ -13,7 +13,8 @@
 ggord_data <- function(mod, env_data = NULL, axes = 1:2, capitalize_cn = FALSE) {
 
 ## Data ####
-x <- ggplot2::fortify(mod)
+
+x <- scores(mod, tidy = TRUE)
 
 if(is.null(mod$CCA)) {
   CONST <- FALSE

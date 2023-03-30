@@ -1,17 +1,20 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
 # veganUtils
-#### Utility functions and extensions to vegan and ggvegan
+#### Utility functions and extensions to vegan. R package version 0.1.9
 
 While the [**vegan**](https://cran.r-project.org/web/packages/vegan/) package is R's leading multivariate and community ecology tool, producing illustrative graphics to examine differences in species patterns often requires fine-tuning the original graphics. Such fine tuning often requires long piece of code before *vegan*'s `cca` or `rda` results are in a visually examinable format. 
 
-The **veganUtils** package produces **good looking and illustrative ordination graphics for [vegan](https://cran.r-project.org/web/packages/vegan/) with less code**. The package also contains other utility functions and extensions to improve the output of *vegan* objects together with tools to graphically examine nonlinear relationships in multivariate data. Further, many plotting functions in *veganUtils* are implemented using [**ggplot2**](http://ggplot2.tidyverse.org/reference/). The package complements the vegan and [**ggvegan**](https://github.com/gavinsimpson/ggvegan) packages using solutions from these packages whenever possible.
+The **veganUtils** package produces **good looking and illustrative ordination graphics for [vegan](https://cran.r-project.org/web/packages/vegan/) with less code**. The package also contains other utility functions and extensions to improve the output of *vegan* objects together with tools to graphically examine nonlinear relationships in multivariate data. Further, many plotting functions in *veganUtils* are implemented using [**ggplot2**](http://ggplot2.tidyverse.org/reference/). The package complements the vegan package using solutions from this package whenever possible.
 
 The package is under development and has not been uploaded to CRAN, but *veganUtils* can be installed directly from GitHub
 
 
 ```r
-library(devtools)
-install_github("gavinsimpson/ggvegan")
-install_github("MikkoVihtakari/veganUtils")
+remotes::install_github("MikkoVihtakari/veganUtils")
 ```
 
 The package is in **an early developmental phase**, and some **functions do not work as intended**. Note that the package comes with absolutely no warranty. Always check the ordination graphics returned by **veganUtils** using the vanilla **vegan** plots. Any bug reports and code fixes are warmly welcomed. Borrowing code from the package to improve *vegan* and associated packages is encouraged. See *Contributions and contact information* for further details.
@@ -29,7 +32,6 @@ Load datasets and make a principal analysis (`rda`) object:
 
 ```r
 library(vegan)
-library(ggvegan)
 library(veganUtils)
 
 data(BCI)
@@ -90,12 +92,12 @@ envfit_table(mod, BCI.env)
 ```
 ##     Type      Variable   R2     p   PC1   PC2
 ## 1 Factor       Habitat 0.40 0.001    NA    NA
-## 2 Factor        Stream 0.03 0.257    NA    NA
-## 3 Factor       Age.cat 0.01 0.825    NA    NA
+## 2 Factor        Stream 0.03 0.252    NA    NA
+## 3 Factor       Age.cat 0.01 0.838    NA    NA
 ## 4 Factor       Geology 0.00 1.000    NA    NA
 ## 5 Vector        UTM.EW 0.85 0.001 -0.08 -1.00
-## 6 Vector        EnvHet 0.08 0.135  0.08 -1.00
-## 7 Vector        UTM.NS 0.04 0.410  0.42  0.91
+## 6 Vector        EnvHet 0.08 0.114  0.08 -1.00
+## 7 Vector        UTM.NS 0.04 0.395  0.42  0.91
 ## 8 Vector Precipitation 0.00 1.000  0.00  0.00
 ## 9 Vector     Elevation 0.00 1.000  0.00  0.00
 ```
@@ -110,12 +112,12 @@ envfit_table(mod, BCI.env, clean_var_names = TRUE)
 ```
 ##     Type      Variable   R2     p   PC1   PC2
 ## 1 Factor       Habitat 0.40 0.001    NA    NA
-## 2 Factor        Stream 0.03 0.307    NA    NA
-## 3 Factor       Age cat 0.01 0.812    NA    NA
+## 2 Factor        Stream 0.03 0.314    NA    NA
+## 3 Factor       Age cat 0.01 0.823    NA    NA
 ## 4 Factor       Geology 0.00 1.000    NA    NA
 ## 5 Vector        UTM EW 0.85 0.001 -0.08 -1.00
-## 6 Vector        EnvHet 0.08 0.134  0.08 -1.00
-## 7 Vector        UTM NS 0.04 0.412  0.42  0.91
+## 6 Vector        EnvHet 0.08 0.143  0.08 -1.00
+## 7 Vector        UTM NS 0.04 0.390  0.42  0.91
 ## 8 Vector Precipitation 0.00 1.000  0.00  0.00
 ## 9 Vector     Elevation 0.00 1.000  0.00  0.00
 ```
@@ -186,7 +188,6 @@ Any contributions to the package are more than welcome. Please contact the packa
 The **veganUtils** package depends on:
 
 - [vegan][vegan]: veganUtils expands on vegan.
-- [ggvegan][ggvegan]: Used to handle vegan objects.
 - [ggplot2][ggplot2]: Used for graphics.
 - [ggrepel][ggrepel]: Used to repel species labels in `ggord_plot`
 - [reshape2][reshape2]: Used to manipulate data.
@@ -196,7 +197,6 @@ The **veganUtils** package depends on:
 - tibble: Used to add columns in between columns in data frames. Remove or make dependancy to `tidyverse`
 
 [vegan]: https://cran.r-project.org/web/packages/vegan/
-[ggvegan]: https://github.com/gavinsimpson/ggvegan
 [ggplot2]: http://ggplot2.tidyverse.org/reference/
 [ggrepel]: https://cran.r-project.org/web/packages/ggrepel/index.html
 [reshape2]: https://cran.r-project.org/web/packages/reshape2/index.html

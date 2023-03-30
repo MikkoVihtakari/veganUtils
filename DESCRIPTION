@@ -1,17 +1,17 @@
 Package: veganUtils
 Type: Package
 Title: Utility functions and extensions to vegan and ggvegan
-Version: 0.1.8
+Version: 0.1.9
 Date: 2023-03-30
 Authors@R: c(person("Mikko", "Vihtakari", email = "mikko.vihtakari@gmail.com", role = c("aut", "cre")))
-Description: The veganUtils package produces good looking and illustrative ordination graphics
+Description: The 'veganUtils' package produces good looking and illustrative ordination graphics
   for vegan with less code. The package also contains other utility functions and extensions
   to improve the output of vegan objects together with tools to graphically examine
   nonlinear relationships in multivariate data. 
-  Further, many plotting functions in veganUtils are implemented using ggplot2. 
-  The package complements the vegan and ggvegan packages using solutions from these
+  Further, many plotting functions in 'veganUtils' are implemented using 'ggplot2'. 
+  The package complements the 'vegan' package using solutions from these
   packages whenever possible.  
-Imports: vegan, ggvegan, ggplot2, ggrepel, reshape2, gridExtra, plyr, Hmisc, tibble
+Imports: vegan, ggplot2, ggrepel, reshape2, gridExtra, plyr, Hmisc, tibble
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
