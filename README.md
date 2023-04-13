@@ -1,8 +1,3 @@
----
-output: 
-  html_document: 
-    keep_md: yes
----
 # veganUtils
 #### Utility functions and extensions to vegan. R package version 0.1.9
 
