@@ -23,7 +23,7 @@ print.ggordData <- function(x, ...) {
   cat("Column names: ")
   cat(colnames(x$sp), sep = ", ")
   cat(NULL, sep = "\n")
-  cat("Species (use $sp$Label to index): ")
+  cat("Species (use $sp$label to index): ")
   cat(utils::head(as.character(x$sp$Label), 3), "...", utils::tail(as.character(x$sp$Label), 3), sep = ", ")
   cat(NULL, sep = "\n")
   cat(NULL, sep = "\n")

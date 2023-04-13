@@ -32,38 +32,38 @@ if(is.null(mod$CCA)) {
 }
 
 ## Select axes
-x <- x[c("Score", "Label", paste0("AX", axes))]
+x <- x[c("score", "label", paste0("AX", axes))]
 names(x)[grepl("AX", names(x))] <- c("AX1", "AX2") # This is needed for ggplot. Scary, but should work
 
 ## Species /  columns
-sp <- subset(x, Score == "species")
+sp <- subset(x, score == "species")
 sp <- droplevels(sp)
 
 ## Sites / rows
-st <- subset(x, Score == "sites")
+st <- subset(x, score == "sites")
 st <- droplevels(st)
-rownames(st) <- as.character(st$Label) #gsub("[[:alpha:]]" , "", as.character(st$Label))
+rownames(st) <- as.character(st$label) #gsub("[[:alpha:]]" , "", as.character(st$label))
 
 if(CONST) {
   const_cols <- select(strsplit(as.character(mod$call)[2], "~"), 2)
   const_cols <- trimws(unlist(strsplit(const_cols, "\\+")))
 
-  bp <- subset(x, Score == "biplot")
+  bp <- subset(x, score == "biplot")
   bp <- droplevels(bp)
 
-  if(any(levels(x$Score) %in% "centroids")) {
+  if(any(levels(x$score) %in% "centroids")) {
     CENT <- TRUE
-    cn <- subset(x, Score == "centroids")
+    cn <- subset(x, score == "centroids")
     cn <- droplevels(cn)
 
-    cn_labs <- gsub(paste(const_cols, collapse = "|"), "", cn$Label)
-    cn_cols <- unique(gsub(paste(cn_labs, collapse = "|"), "", cn$Label))
+    cn_labs <- gsub(paste(const_cols, collapse = "|"), "", cn$label)
+    cn_cols <- unique(gsub(paste(cn_labs, collapse = "|"), "", cn$label))
 
-    bp <- bp[!bp$Label %in% grep(paste(cn_cols, collapse = "|"), bp$Label, value = TRUE),]
+    bp <- bp[!bp$label %in% grep(paste(cn_cols, collapse = "|"), bp$label, value = TRUE),]
     bp <- droplevels(bp)
 
-    cn$label <- gsub(paste(cn_cols, collapse = "|"), "", cn$Label)
-    cn$variable <- gsub(paste(cn$label, collapse = "|"), "", cn$Label)
+    cn$label <- gsub(paste(cn_cols, collapse = "|"), "", cn$label)
+    cn$variable <- gsub(paste(cn$label, collapse = "|"), "", cn$label)
 
     if(nrow(bp) > 0) BPARR <- TRUE else BPARR <- FALSE
   }
@@ -79,20 +79,20 @@ if(capitalize_cn & CONST) {
 
   # i <- 1
   if(CENT) {
-    levels(cn$Label) <- sapply(seq_along(levels(cn$Label)), function(i) {
+    levels(cn$label) <- sapply(seq_along(levels(cn$label)), function(i) {
 
-    k <- gsub(paste(const_cols, collapse = "|"), "", levels(cn$Label)[i])
+    k <- gsub(paste(const_cols, collapse = "|"), "", levels(cn$label)[i])
 
     if(k == "") {
-      levels(cn$Label)[i]
+      levels(cn$label)[i]
     } else {
       k
     }
   })
 }
 
-  if(BPARR) levels(bp$Label) <- Hmisc::capitalize(levels(bp$Label))
-  levels(cn$Label) <- Hmisc::capitalize(levels(cn$Label))
+  if(BPARR) levels(bp$label) <- Hmisc::capitalize(levels(bp$label))
+  levels(cn$label) <- Hmisc::capitalize(levels(cn$label))
 }
 
 ## Environmental data ####
