@@ -94,7 +94,12 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
   ## Sites
   
   if(!is.null(env_data) & st_col %in% names(env_data)) {
-    levs <- unique(env_data[[st_col]])
+    if(!inherits(env_data[[st_col]], "factor")) {
+      env_data[[st_col]] <- factor(env_data[[st_col]])
+    } 
+    
+    levs <- levels(env_data[[st_col]])
+    
     STMAP <- TRUE
     for(i in seq_along(levs)) {
       points(mod, display = "sites", pch = st_symbol, cex = sizes$st_cex, col = envfits_col[i], scaling = scaling, select = env_data[[st_col]] == levs[i])
@@ -107,7 +112,7 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
   ## Ordihull
   
   if(ordihull_st) {
-    vegan::ordihull(mod, env_data[[st_col]], col = envfits_col[1:length(levs)], alpha = 0.5, cex = sizes$ordi_cex)
+    vegan::ordihull(mod, env_data[[st_col]], col = envfits_col[seq_along(levs)], alpha = 0.5, cex = sizes$ordi_cex)
   }
   
   ## Species
@@ -145,10 +150,10 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
   
   ## Envfit
   
-  if(!is.null(env_data) & is.null(envfits) & is.null(mod$CCA)) {
-    envfits <- apply(env_data, 2, function(k) length(unique(k)) > 1)
-    envfits <- names(envfits)[envfits]
-  }
+  # if(!is.null(env_data) & is.null(envfits) & is.null(mod$CCA)) {
+  #   envfits <- apply(env_data, 2, function(k) length(unique(k)) > 1)
+  #   envfits <- names(envfits)[envfits]
+  # }
   
   if(!is.null(envfits) & is.vector(envfits)) {
     if(length(envfits) == 1 & all(envfits == st_col) & STMAP) {
