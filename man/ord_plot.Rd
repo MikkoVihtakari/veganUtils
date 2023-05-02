@@ -84,7 +84,7 @@ ord_plot(
 
 \item{ordi_col}{character specifying the color for \code{\link[vegan]{ordisurf}}.}
 
-\item{envfits_col}{character vector specifying the colors for \code{\link[vegan]{envfit}} objects.}
+\item{envfits_col}{character vector specifying the colors for \code{\link[vegan]{envfit}} objects. If \code{st_col} is mapped to a variable, the \code{envfits_col} vector is reversed for environmental variables (\code{envfits}) to avoid overlapping colors.}
 
 \item{main_cex}{cex parameter for axes titles (\code{\link[graphics]{par}(cex)}).}
 

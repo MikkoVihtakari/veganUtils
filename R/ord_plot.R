@@ -14,7 +14,7 @@
 #' @param sp_arrow logical indicating whether biplot arrows should be plotted for species.
 #' @param cn_col character specifying the color for centroids (\code{display = "cn"} in \code{\link[vegan]{plot.cca}}).
 #' @param ordi_col character specifying the color for \code{\link[vegan]{ordisurf}}.
-#' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects.
+#' @param envfits_col character vector specifying the colors for \code{\link[vegan]{envfit}} objects. If \code{st_col} is mapped to a variable, the \code{envfits_col} vector is reversed for environmental variables (\code{envfits}) to avoid overlapping colors. 
 #' @param species logical indicating whether to show the species labels.
 #' @param main_cex cex parameter for axes titles (\code{\link[graphics]{par}(cex)}).
 #' @param sp_font An integer which specifies which font to use for text. If possible, device drivers arrange so that 1 corresponds to plain text (the default), 2 to bold face, 3 to italic and 4 to bold italic. Also, font 5 is expected to be the symbol font, in Adobe symbol encoding. On some devices font families can be selected by family to choose different sets of 5 fonts. From \code{\link[graphics]{par}}.
@@ -170,7 +170,11 @@ ord_plot <- function(mod, env_data = NULL, scaling = "species", size_preset = "d
         
         labs <- list(vectors = row.names(ef$vectors$arrows), factors = gsub(paste(names(env_data), collapse = "|"), "", rownames(ef$factors$centroids)))
         
-        plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
+        if(STMAP) {
+          plot(ef, add = TRUE, col = rev(envfits_col)[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
+        } else {
+          plot(ef, add = TRUE, col = envfits_col[which(envfits == k)], label = labs, cex = sizes$envfits_cex, font = 2)
+        }
       }
     }
   } 
